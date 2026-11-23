@@ -221,9 +221,9 @@ for s in ["Lewis P. et al. Retrieval-Augmented Generation for Knowledge-Intensiv
           "Neo4j Cypher Manual 5. https://neo4j.com/docs/cypher-manual/; FAISS: https://github.com/facebookresearch/faiss",
           "Звіти ЛР 7–15 автора (дані, таблиці та рисунки цього документа)."]:
     r.bullets([s])
-r.p("**Репозиторій:** код і дані — папка курсу (`pcdiag/`, `9/`–`16/`); історія покращень системи — "
-    "git-репозиторій `15/repo` (теги v1.0-before, v1.1-after). Посилання на публічний репозиторій "
-    "додає студент після завантаження (папка курсу локальна).")
+r.p("**Репозиторій:** https://github.com/FantomZ0ng/BS — код і дані (`pcdiag/`, `9/`–`16/`); історія "
+    "покращень системи — `15/repo.bundle` (git bundle з тегами v1.0-before, v1.1-after; відновлення: "
+    "`git clone 15/repo.bundle repo`).")
 
 r.h1("Відповідність результатам лабораторної роботи")
 r.table(["Результат", "Де у Whitepaper"],
