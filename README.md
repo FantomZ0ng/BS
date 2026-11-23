@@ -31,3 +31,15 @@ Python-середовище: `D:\venvs\vibrani` (запуск з цієї пап
 - Секрети: файл `.env` у корені (NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD) — не передавати й не комітити.
 - Кеш відповідей LLM: `.llm_cache/` (temperature=0; зберігає й виміряну затримку). `LLM_CACHE=0` — вимкнути.
 - Запуск ЛР N: `D:\venvs\vibrani\Scripts\python.exe _tools\run_lab.py N`, звіт: `cd _tools; python build_labN.py`.
+
+### Історія покращень ЛР 15 (git bundle)
+Окремий git-репозиторій ЛР 15 (коміти C1–C3, теги `v1.0-before` і `v1.1-after`) збережено одним файлом
+`15/repo.bundle`, бо git не зберігає вкладений репозиторій разом з його історією. Щоб переглянути історію,
+у корені репозиторію виконайте:
+
+```powershell
+git clone 15/repo.bundle 15/repo
+```
+```powershell
+cd 15/repo; git log --oneline --decorate --all
+```
