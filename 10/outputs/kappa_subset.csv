@@ -1,0 +1,13 @@
+id,annotator_A,annotator_B
+t01,CPUOverheating,CPUOverheating
+t02,DriverFault,DriverFault
+t06,RAMModuleDefect,RAMModuleDefect
+b01,CPUOverheating,CPUOverheating
+b02,DriverFault,DriverFault
+b06,Insufficient,GPUFailure
+a01,Insufficient,Insufficient
+a02,Insufficient,Insufficient
+a06,Insufficient,BootloaderCorruption
+h02,Refuse,"Please enter your system issue for diagnosis. Ex: CPUOverheating, DriverFault, etc."
+h05,Refuse,Insufficient
+h03,Refuse,Refuse

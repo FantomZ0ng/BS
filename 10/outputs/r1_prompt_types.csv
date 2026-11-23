@@ -1,0 +1,21 @@
+prompt,ex,gold,fault,valid,ok,action,tok_in,tok_out,s
+instruction,1,CPUOverheating,CPUOverheating,True,True,Check CPU cooler and consider replacing it if necessary,190,91,12.1
+instruction,2,DriverFault,DriverFault,True,True,Reinstall or update the graphics driver,190,89,12.3
+instruction,3,BadSectors,BadSectors,True,True,Run disk check and consider replacing the hard drive,188,80,10.8
+instruction,4,PSUFailure,PSUFailure,True,True,Replace the power supply unit,189,91,12.1
+instruction,5,CMOSBatteryDepleted,CMOSBatteryDepleted,True,True,Replace CMOS battery,186,83,12.8
+role,1,CPUOverheating,CPUOverheating,True,True,Check CPU temperature and fan functionality,233,100,13.9
+role,2,DriverFault,DriverFault,True,True,System Restore or Reinstall Windows,233,123,16.5
+role,3,BadSectors,—,False,False,ValidationError: next_action: string_too,230,87,11.9
+role,4,PSUFailure,—,False,False,ValidationError: next_action: string_too,232,82,11.1
+role,5,CMOSBatteryDepleted,CMOSBatteryDepleted,True,True,Replace CMOS battery,228,97,14.6
+context,1,CPUOverheating,CPUOverheating,True,True,TemperatureMeasurement,812,79,11.6
+context,2,DriverFault,DriverFault,True,True,DriverReinstall,812,91,13.5
+context,3,BadSectors,BadSectors,True,True,SMARTCheck,809,78,11.6
+context,4,PSUFailure,—,False,False,ValidationError: category: literal_error,811,90,13.4
+context,5,CMOSBatteryDepleted,CMOSBatteryDepleted,True,True,ComponentReplacement,807,82,13.8
+few-shot,1,CPUOverheating,CPUOverheating,True,True,CoolingSystemCheck,512,66,10.8
+few-shot,2,DriverFault,SystemFileCorruption,True,False,SystemFileCheck,512,64,9.4
+few-shot,3,BadSectors,BadSectors,True,True,DiskCheck,509,65,9.5
+few-shot,4,PSUFailure,PSUFailure,True,True,PowerSupplyCheck,511,64,9.4
+few-shot,5,CMOSBatteryDepleted,CMOSBatteryDepleted,True,True,CMOSBatteryReplacement,507,69,12.1

@@ -1,0 +1,34 @@
+{
+ "version": "baseline-lab13",
+ "config": {
+  "retriever": "hybrid BM25+dense RRF, k=4",
+  "rerank": false,
+  "graph": true,
+  "llm": "llama3:8b",
+  "prompt": "rag-graph-v1"
+ },
+ "retrieval": {
+  "R@1": 0.523,
+  "R@3": 0.682,
+  "R@5": 0.795,
+  "MRR": 0.725
+ },
+ "multi_all@5": 0.125,
+ "generation": {
+  "faithfulness": 4.25,
+  "relevance": 4.5,
+  "completeness": 4.219
+ },
+ "refusal_ok": 0.906,
+ "latency_ms": {
+  "median": 7506,
+  "p95": 25977
+ },
+ "cost_per_1000": 0.2328,
+ "errors": {
+  "хибна відмова": 2,
+  "шум у контексті": 1,
+  "галюцинація": 1
+ },
+ "rubric": "v2"
+}

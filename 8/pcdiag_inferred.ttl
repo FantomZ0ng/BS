@@ -1,0 +1,666 @@
+@prefix ns1: <http://example.org/pcdiag#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://anonymous> a owl:Ontology .
+
+<http://example.org/pcdiag> a owl:Ontology .
+
+ns1:BootLoop a owl:Class ;
+    rdfs:label "Циклічне перезавантаження"@uk ;
+    rdfs:subClassOf ns1:BootSymptom .
+
+ns1:BootloaderCorruption a owl:Class ;
+    rdfs:label "Пошкодження завантажувача"@uk ;
+    rdfs:subClassOf ns1:OSFault .
+
+ns1:CMOSBatteryDepleted a owl:Class ;
+    rdfs:label "Розряджена батарейка CMOS"@uk ;
+    rdfs:subClassOf ns1:PowerFault .
+
+ns1:ClockReset a owl:Class ;
+    rdfs:label "Скидання дати й часу"@uk ;
+    rdfs:subClassOf ns1:RuntimeSymptom .
+
+ns1:DisableXMP a owl:Class ;
+    rdfs:label "Вимкнення XMP"@uk ;
+    rdfs:subClassOf ns1:RepairAction .
+
+ns1:DisplayArtifacts a owl:Class ;
+    rdfs:label "Артефакти зображення"@uk ;
+    rdfs:subClassOf ns1:RuntimeSymptom .
+
+ns1:FanFailure a owl:Class ;
+    rdfs:label "Відмова вентилятора"@uk ;
+    rdfs:subClassOf ns1:CoolingFault .
+
+ns1:GPUFailure a owl:Class ;
+    rdfs:label "Відмова відеокарти"@uk ;
+    rdfs:subClassOf ns1:VideoFault .
+
+ns1:Heatsink a owl:Class ;
+    rdfs:label "Радіатор"@uk ;
+    rdfs:subClassOf ns1:CoolingComponent .
+
+ns1:Monitor a owl:Class ;
+    rdfs:label "Монітор"@uk ;
+    rdfs:subClassOf ns1:ComputeComponent .
+
+ns1:NoDisplay a owl:Class ;
+    rdfs:label "Немає зображення"@uk ;
+    rdfs:subClassOf ns1:PowerOnSymptom .
+
+ns1:RAMPoorContact a owl:Class ;
+    rdfs:label "Поганий контакт ОЗП"@uk ;
+    rdfs:subClassOf ns1:MemoryFault .
+
+ns1:RAMUnstableOverclock a owl:Class ;
+    rdfs:label "Нестабільний розгін ОЗП"@uk ;
+    rdfs:subClassOf ns1:MemoryFault .
+
+ns1:SystemFileCorruption a owl:Class ;
+    rdfs:label "Пошкодження системних файлів"@uk ;
+    rdfs:subClassOf ns1:OSFault .
+
+ns1:ThermalPaste a owl:Class ;
+    rdfs:label "Термопаста"@uk ;
+    rdfs:subClassOf ns1:CoolingComponent .
+
+ns1:a_boot a ns1:BootloaderRepair,
+        owl:NamedIndividual .
+
+ns1:ageYears a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain ns1:Computer ;
+    rdfs:range xsd:integer .
+
+ns1:case1 a ns1:DiagnosticCase,
+        ns1:StartupProblemCase,
+        owl:NamedIndividual ;
+    ns1:concernsComputer ns1:pc1 ;
+    ns1:diagnosedAs ns1:f_psu ;
+    ns1:hasSymptom ns1:s_nopower ;
+    ns1:reportedOn "2026-09-03T09:00:00"^^xsd:dateTime .
+
+ns1:case2 a ns1:DiagnosticCase,
+        ns1:StartupProblemCase,
+        owl:NamedIndividual ;
+    ns1:concernsComputer ns1:pc1 ;
+    ns1:cpuTemperature 54.0 ;
+    ns1:diagnosedAs ns1:f_driver ;
+    ns1:hasSymptom ns1:s_bsod ;
+    ns1:reportedOn "2026-09-15T09:00:00"^^xsd:dateTime .
+
+ns1:case3 a ns1:DiagnosticCase,
+        ns1:OverheatingCase,
+        owl:NamedIndividual ;
+    ns1:concernsComputer ns1:pc1 ;
+    ns1:cpuTemperature 96.5 ;
+    ns1:diagnosedAs ns1:f_overheat ;
+    ns1:hasSymptom ns1:s_shutdown ;
+    ns1:reportedOn "2026-10-01T09:00:00"^^xsd:dateTime .
+
+ns1:case4 a ns1:DiagnosticCase,
+        ns1:StartupProblemCase,
+        owl:NamedIndividual ;
+    ns1:concernsComputer ns1:pc1 ;
+    ns1:diagnosedAs ns1:f_sectors ;
+    ns1:hasSymptom ns1:s_booterr ;
+    ns1:reportedOn "2026-10-12T09:00:00"^^xsd:dateTime .
+
+ns1:case5 a [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "0"^^xsd:nonNegativeInteger ;
+            owl:onClass ns1:Fault ;
+            owl:onProperty ns1:diagnosedAs ],
+        ns1:DiagnosticCase,
+        ns1:OverheatingCase,
+        ns1:UndiagnosedCase,
+        owl:NamedIndividual ;
+    ns1:concernsComputer ns1:pc1 ;
+    ns1:cpuTemperature 92.0 ;
+    ns1:hasSymptom ns1:s_slow ;
+    ns1:reportedOn "2026-11-02T09:00:00"^^xsd:dateTime .
+
+ns1:case6 a ns1:DiagnosticCase,
+        ns1:MemoryRelatedCase,
+        ns1:StartupProblemCase,
+        owl:NamedIndividual ;
+    ns1:concernsComputer ns1:pc1 ;
+    ns1:cpuTemperature 61.0 ;
+    ns1:diagnosedAs ns1:f_ram ;
+    ns1:hasSymptom ns1:s_beeps,
+        ns1:s_bsod ;
+    ns1:reportedOn "2026-11-09T09:00:00"^^xsd:dateTime .
+
+ns1:confirmedBy a owl:ObjectProperty ;
+    rdfs:domain ns1:Fault ;
+    rdfs:range ns1:DiagnosticAction .
+
+ns1:f_malware a ns1:Malware,
+        owl:NamedIndividual ;
+    ns1:manifestsAs ns1:s_slow ;
+    ns1:resolvedBy ns1:a_av .
+
+ns1:manifestsAs a owl:ObjectProperty ;
+    rdfs:domain ns1:Fault ;
+    rdfs:range ns1:Symptom .
+
+ns1:modelName a owl:DatatypeProperty ;
+    rdfs:domain ns1:Component ;
+    rdfs:range xsd:string .
+
+ns1:reportedOn a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain ns1:DiagnosticCase ;
+    rdfs:range xsd:dateTime .
+
+ns1:AntivirusScan a owl:Class ;
+    rdfs:label "Антивірусна перевірка"@uk ;
+    rdfs:subClassOf ns1:RepairAction .
+
+ns1:BadSectors a owl:Class ;
+    rdfs:label "Збійні сектори"@uk ;
+    rdfs:subClassOf ns1:StorageFault .
+
+ns1:BlueScreen a owl:Class ;
+    rdfs:label "Синій екран"@uk ;
+    rdfs:subClassOf ns1:BootSymptom .
+
+ns1:BootloaderError a owl:Class ;
+    rdfs:label "Помилка завантажувача"@uk ;
+    rdfs:subClassOf ns1:BootSymptom .
+
+ns1:BootloaderRepair a owl:Class ;
+    rdfs:label "Відновлення завантажувача"@uk ;
+    rdfs:subClassOf ns1:RepairAction .
+
+ns1:CMOSBattery a owl:Class ;
+    rdfs:label "Батарейка CMOS"@uk ;
+    rdfs:subClassOf ns1:PowerComponent .
+
+ns1:CPU a owl:Class ;
+    rdfs:label "Процесор"@uk ;
+    rdfs:subClassOf ns1:ComputeComponent .
+
+ns1:CPUOverheating a owl:Class ;
+    rdfs:label "Перегрів процесора"@uk ;
+    rdfs:subClassOf ns1:CoolingFault .
+
+ns1:ComponentReplacement a owl:Class ;
+    rdfs:label "Заміна компонента"@uk ;
+    rdfs:subClassOf ns1:RepairAction .
+
+ns1:CoolingSystem a owl:Class ;
+    rdfs:label "Система охолодження"@uk ;
+    rdfs:subClassOf ns1:CoolingComponent .
+
+ns1:DriverFault a owl:Class ;
+    rdfs:label "Несправність драйвера"@uk ;
+    rdfs:subClassOf ns1:SoftwareFault .
+
+ns1:DriverReinstall a owl:Class ;
+    rdfs:label "Перевстановлення драйвера"@uk ;
+    rdfs:subClassOf ns1:RepairAction .
+
+ns1:DustCleaning a owl:Class ;
+    rdfs:label "Чищення від пилу"@uk ;
+    rdfs:subClassOf ns1:RepairAction .
+
+ns1:Fan a owl:Class ;
+    rdfs:label "Вентилятор"@uk ;
+    rdfs:subClassOf ns1:CoolingComponent .
+
+ns1:GraphicsCard a owl:Class ;
+    rdfs:label "Відеокарта"@uk ;
+    rdfs:subClassOf ns1:ComputeComponent .
+
+ns1:HDD a owl:Class ;
+    rdfs:label "Жорсткий диск"@uk ;
+    rdfs:subClassOf ns1:StorageDrive .
+
+ns1:Malware a owl:Class ;
+    rdfs:label "Шкідливе ПЗ"@uk ;
+    rdfs:subClassOf ns1:SoftwareFault .
+
+ns1:MemoryRelatedCase a owl:Class ;
+    rdfs:label "Випадок, пов'язаний з пам'яттю"@uk ;
+    rdfs:subClassOf ns1:DiagnosticCase ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( ns1:DiagnosticCase [ a owl:Restriction ;
+                        owl:onProperty ns1:diagnosedAs ;
+                        owl:someValuesFrom ns1:MemoryFault ] ) ] .
+
+ns1:MemoryTest a owl:Class ;
+    rdfs:label "Тест пам'яті"@uk ;
+    rdfs:subClassOf ns1:DiagnosticAction .
+
+ns1:Motherboard a owl:Class ;
+    rdfs:label "Системна плата"@uk ;
+    rdfs:subClassOf ns1:InterconnectComponent .
+
+ns1:NoPower a owl:Class ;
+    rdfs:label "Немає живлення"@uk ;
+    rdfs:subClassOf ns1:PowerOnSymptom .
+
+ns1:POSTBeeps a owl:Class ;
+    rdfs:label "Сигнали POST"@uk ;
+    rdfs:subClassOf ns1:PowerOnSymptom .
+
+ns1:PSUFailure a owl:Class ;
+    rdfs:label "Відмова блока живлення"@uk ;
+    rdfs:subClassOf ns1:PowerFault .
+
+ns1:PSUSwapTest a owl:Class ;
+    rdfs:label "Перевірка іншим БЖ"@uk ;
+    rdfs:subClassOf ns1:DiagnosticAction .
+
+ns1:PowerSupplyUnit a owl:Class ;
+    rdfs:label "Блок живлення"@uk ;
+    rdfs:subClassOf ns1:PowerComponent .
+
+ns1:RAMModuleDefect a owl:Class ;
+    rdfs:label "Дефект модуля ОЗП"@uk ;
+    rdfs:subClassOf ns1:MemoryFault .
+
+ns1:SMARTCheck a owl:Class ;
+    rdfs:label "Перевірка SMART"@uk ;
+    rdfs:subClassOf ns1:DiagnosticAction .
+
+ns1:SSD a owl:Class ;
+    rdfs:label "Твердотільний накопичувач"@uk ;
+    rdfs:subClassOf ns1:StorageDrive .
+
+ns1:SlowPerformance a owl:Class ;
+    rdfs:label "Повільна робота"@uk ;
+    rdfs:subClassOf ns1:RuntimeSymptom .
+
+ns1:StorageFault a owl:Class ;
+    rdfs:label "Несправність накопичувача"@uk ;
+    rdfs:subClassOf ns1:HardwareFault .
+
+ns1:SuddenShutdown a owl:Class ;
+    rdfs:label "Раптове вимкнення"@uk ;
+    rdfs:subClassOf ns1:RuntimeSymptom .
+
+ns1:SystemUnit a owl:Class ;
+    rdfs:label "Системний блок"@uk ;
+    rdfs:subClassOf ns1:InterconnectComponent .
+
+ns1:TemperatureMeasurement a owl:Class ;
+    rdfs:label "Вимірювання температури"@uk ;
+    rdfs:subClassOf ns1:DiagnosticAction .
+
+ns1:UndiagnosedCase a owl:Class ;
+    rdfs:label "Недіагностований випадок"@uk ;
+    rdfs:subClassOf ns1:DiagnosticCase ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( ns1:DiagnosticCase [ a owl:Class ;
+                        owl:complementOf [ a owl:Restriction ;
+                                owl:onProperty ns1:diagnosedAs ;
+                                owl:someValuesFrom ns1:Fault ] ] ) ] .
+
+ns1:VideoFault a owl:Class ;
+    rdfs:label "Несправність відеопідсистеми"@uk ;
+    rdfs:subClassOf ns1:HardwareFault .
+
+ns1:a_av a ns1:AntivirusScan,
+        owl:NamedIndividual .
+
+ns1:a_clean a ns1:DustCleaning,
+        owl:NamedIndividual .
+
+ns1:a_driver a ns1:DriverReinstall,
+        owl:NamedIndividual .
+
+ns1:concernsComputer a owl:ObjectProperty ;
+    rdfs:domain ns1:DiagnosticCase ;
+    rdfs:range ns1:Computer .
+
+ns1:cpuTemperature a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:domain ns1:DiagnosticCase ;
+    rdfs:range xsd:decimal .
+
+ns1:d_memtest a ns1:MemoryTest,
+        owl:NamedIndividual .
+
+ns1:d_psu a ns1:PSUSwapTest,
+        owl:NamedIndividual .
+
+ns1:d_smart a ns1:SMARTCheck,
+        owl:NamedIndividual .
+
+ns1:d_temp a ns1:TemperatureMeasurement,
+        owl:NamedIndividual .
+
+ns1:f_driver a ns1:DriverFault,
+        owl:NamedIndividual ;
+    ns1:manifestsAs ns1:s_bsod ;
+    ns1:resolvedBy ns1:a_driver .
+
+ns1:f_overheat a ns1:CPUOverheating,
+        owl:NamedIndividual ;
+    ns1:affects ns1:cpu1 ;
+    ns1:confirmedBy ns1:d_temp ;
+    ns1:manifestsAs ns1:s_shutdown,
+        ns1:s_slow ;
+    ns1:resolvedBy ns1:a_clean .
+
+ns1:f_psu a ns1:PSUFailure,
+        owl:NamedIndividual ;
+    ns1:affects ns1:psu1 ;
+    ns1:confirmedBy ns1:d_psu ;
+    ns1:manifestsAs ns1:s_nopower,
+        ns1:s_shutdown ;
+    ns1:resolvedBy ns1:a_replace .
+
+ns1:f_ram a ns1:RAMModuleDefect,
+        owl:NamedIndividual ;
+    ns1:affects ns1:ram1 ;
+    ns1:confirmedBy ns1:d_memtest ;
+    ns1:manifestsAs ns1:s_beeps,
+        ns1:s_bsod ;
+    ns1:resolvedBy ns1:a_replace .
+
+ns1:f_sectors a ns1:BadSectors,
+        owl:NamedIndividual ;
+    ns1:affects ns1:hdd1 ;
+    ns1:confirmedBy ns1:d_smart ;
+    ns1:manifestsAs ns1:s_booterr,
+        ns1:s_bsod ;
+    ns1:resolvedBy ns1:a_replace .
+
+ns1:hasPart a owl:ObjectProperty,
+        owl:TransitiveProperty ;
+    rdfs:domain ns1:Component ;
+    rdfs:range ns1:Component ;
+    owl:inverseOf ns1:partOf .
+
+ns1:partOf a owl:ObjectProperty,
+        owl:TransitiveProperty ;
+    rdfs:domain ns1:Component ;
+    rdfs:range ns1:Component ;
+    owl:inverseOf ns1:hasPart .
+
+ns1:resolvedBy a owl:ObjectProperty ;
+    rdfs:domain ns1:Fault ;
+    rdfs:range ns1:RepairAction .
+
+ns1:CoolingFault a owl:Class ;
+    rdfs:label "Несправність охолодження"@uk ;
+    rdfs:subClassOf ns1:HardwareFault .
+
+ns1:OSFault a owl:Class ;
+    rdfs:label "Несправність ОС"@uk ;
+    rdfs:subClassOf ns1:SoftwareFault .
+
+ns1:OverheatingCase a owl:Class ;
+    rdfs:label "Випадок перегріву"@uk ;
+    rdfs:subClassOf ns1:DiagnosticCase ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( ns1:DiagnosticCase [ a owl:Restriction ;
+                        owl:onProperty ns1:cpuTemperature ;
+                        owl:someValuesFrom [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:decimal ;
+                                owl:withRestrictions ( [ xsd:minExclusive 90.0 ] ) ] ] ) ] .
+
+ns1:PowerComponent a owl:Class ;
+    rdfs:label "Компонент живлення"@uk ;
+    rdfs:subClassOf ns1:Component .
+
+ns1:PowerFault a owl:Class ;
+    rdfs:label "Несправність живлення"@uk ;
+    rdfs:subClassOf ns1:HardwareFault .
+
+ns1:RAM a owl:Class ;
+    rdfs:label "Оперативна пам'ять"@uk ;
+    rdfs:subClassOf ns1:StorageComponent .
+
+ns1:StorageComponent a owl:Class ;
+    rdfs:label "Компонент зберігання"@uk ;
+    rdfs:subClassOf ns1:Component .
+
+ns1:StorageDrive a owl:Class ;
+    rdfs:label "Накопичувач"@uk ;
+    rdfs:subClassOf ns1:StorageComponent .
+
+ns1:affects a owl:ObjectProperty ;
+    rdfs:domain ns1:Fault ;
+    rdfs:range ns1:Component .
+
+ns1:gpu1 a ns1:GraphicsCard,
+        owl:NamedIndividual ;
+    ns1:modelName "GTX 1650"^^xsd:string ;
+    ns1:partOf ns1:pc1,
+        ns1:unit1 .
+
+ns1:hasSymptom a owl:ObjectProperty ;
+    rdfs:domain ns1:DiagnosticCase ;
+    rdfs:range ns1:Symptom .
+
+ns1:s_beeps a ns1:POSTBeeps,
+        owl:NamedIndividual .
+
+ns1:s_booterr a ns1:BootloaderError,
+        owl:NamedIndividual .
+
+ns1:s_nopower a ns1:NoPower,
+        owl:NamedIndividual .
+
+ns1:ssd1 a ns1:SSD,
+        owl:NamedIndividual ;
+    ns1:modelName "Samsung 870 EVO"^^xsd:string ;
+    ns1:partOf ns1:pc1,
+        ns1:unit1 .
+
+ns1:Action a owl:Class ;
+    rdfs:label "Дія"@uk ;
+    rdfs:subClassOf ns1:DiagnosticConcept .
+
+ns1:ComputeComponent a owl:Class ;
+    rdfs:label "Обчислювальний компонент"@uk ;
+    rdfs:subClassOf ns1:Component .
+
+ns1:InterconnectComponent a owl:Class ;
+    rdfs:label "Комутаційний компонент"@uk ;
+    rdfs:subClassOf ns1:Component .
+
+ns1:a_replace a ns1:ComponentReplacement,
+        owl:NamedIndividual .
+
+ns1:bat1 a ns1:CMOSBattery,
+        owl:NamedIndividual ;
+    ns1:modelName "CR2032"^^xsd:string ;
+    ns1:partOf ns1:mb1,
+        ns1:pc1,
+        ns1:unit1 .
+
+ns1:cool1 a ns1:CoolingSystem,
+        owl:NamedIndividual ;
+    ns1:hasPart ns1:fan1 ;
+    ns1:partOf ns1:pc1,
+        ns1:unit1 .
+
+ns1:fan1 a ns1:Fan,
+        owl:NamedIndividual ;
+    ns1:modelName "Deepcool GAMMAXX"^^xsd:string ;
+    ns1:partOf ns1:cool1,
+        ns1:pc1,
+        ns1:unit1 .
+
+ns1:hdd1 a ns1:HDD,
+        owl:NamedIndividual ;
+    ns1:modelName "WD Blue 1TB"^^xsd:string ;
+    ns1:partOf ns1:pc1,
+        ns1:unit1 .
+
+ns1:psu1 a ns1:PowerSupplyUnit,
+        owl:NamedIndividual ;
+    ns1:modelName "Chieftec 500W"^^xsd:string ;
+    ns1:partOf ns1:pc1,
+        ns1:unit1 .
+
+ns1:s_shutdown a ns1:SuddenShutdown,
+        owl:NamedIndividual .
+
+ns1:s_slow a ns1:SlowPerformance,
+        owl:NamedIndividual .
+
+ns1:Computer a owl:Class ;
+    rdfs:label "Персональний комп'ютер"@uk ;
+    rdfs:subClassOf ns1:InterconnectComponent .
+
+ns1:CoolingComponent a owl:Class ;
+    rdfs:label "Компонент охолодження"@uk ;
+    rdfs:subClassOf ns1:Component .
+
+ns1:MemoryFault a owl:Class ;
+    rdfs:label "Несправність пам'яті"@uk ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty ns1:affects ;
+            owl:someValuesFrom ns1:RAM ],
+        ns1:HardwareFault .
+
+ns1:SoftwareFault a owl:Class ;
+    rdfs:label "Програмна несправність"@uk ;
+    rdfs:subClassOf ns1:Fault .
+
+ns1:StartupProblemCase a owl:Class ;
+    rdfs:label "Випадок проблеми запуску"@uk ;
+    rdfs:subClassOf ns1:DiagnosticCase ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( ns1:DiagnosticCase [ a owl:Restriction ;
+                        owl:onProperty ns1:hasSymptom ;
+                        owl:someValuesFrom [ a owl:Class ;
+                                owl:unionOf ( ns1:PowerOnSymptom ns1:BootSymptom ) ] ] ) ] .
+
+ns1:cpu1 a ns1:CPU,
+        owl:NamedIndividual ;
+    ns1:modelName "Intel Core i5-10400"^^xsd:string ;
+    ns1:partOf ns1:mb1,
+        ns1:pc1,
+        ns1:unit1 .
+
+ns1:diagnosedAs a owl:ObjectProperty ;
+    rdfs:domain ns1:DiagnosticCase ;
+    rdfs:range ns1:Fault .
+
+ns1:ram1 a ns1:RAM,
+        owl:NamedIndividual ;
+    ns1:modelName "Kingston 8GB DDR4"^^xsd:string ;
+    ns1:partOf ns1:mb1,
+        ns1:pc1,
+        ns1:unit1 .
+
+ns1:BootSymptom a owl:Class ;
+    rdfs:label "Симптом завантаження"@uk ;
+    rdfs:subClassOf ns1:Symptom .
+
+ns1:DiagnosticAction a owl:Class ;
+    rdfs:label "Діагностична дія"@uk ;
+    rdfs:subClassOf ns1:Action .
+
+ns1:DiagnosticConcept a owl:Class ;
+    rdfs:label "Поняття"@uk ;
+    rdfs:subClassOf owl:Thing .
+
+ns1:HardwareFault a owl:Class ;
+    rdfs:label "Апаратна несправність"@uk ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty ns1:affects ;
+            owl:someValuesFrom ns1:Component ],
+        ns1:Fault ;
+    owl:disjointWith ns1:SoftwareFault .
+
+ns1:PowerOnSymptom a owl:Class ;
+    rdfs:label "Симптом увімкнення"@uk ;
+    rdfs:subClassOf ns1:Symptom .
+
+ns1:RuntimeSymptom a owl:Class ;
+    rdfs:label "Симптом роботи"@uk ;
+    rdfs:subClassOf ns1:Symptom .
+
+ns1:mb1 a ns1:Motherboard,
+        owl:NamedIndividual ;
+    ns1:hasPart ns1:bat1,
+        ns1:cpu1,
+        ns1:ram1 ;
+    ns1:modelName "ASUS PRIME B460"^^xsd:string ;
+    ns1:partOf ns1:pc1,
+        ns1:unit1 .
+
+ns1:s_bsod a ns1:BlueScreen,
+        owl:NamedIndividual .
+
+ns1:Symptom a owl:Class ;
+    rdfs:label "Симптом"@uk ;
+    rdfs:subClassOf ns1:DiagnosticConcept .
+
+ns1:RepairAction a owl:Class ;
+    rdfs:label "Ремонтна дія"@uk ;
+    rdfs:subClassOf ns1:Action .
+
+ns1:Fault a owl:Class ;
+    rdfs:label "Несправність"@uk ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom ns1:RepairAction ;
+            owl:onProperty ns1:resolvedBy ],
+        ns1:DiagnosticConcept .
+
+ns1:unit1 a ns1:SystemUnit,
+        owl:NamedIndividual ;
+    ns1:hasPart ns1:bat1,
+        ns1:cool1,
+        ns1:cpu1,
+        ns1:fan1,
+        ns1:gpu1,
+        ns1:hdd1,
+        ns1:mb1,
+        ns1:psu1,
+        ns1:ram1,
+        ns1:ssd1 ;
+    ns1:partOf ns1:pc1 .
+
+ns1:Component a owl:Class ;
+    rdfs:label "Компонент"@uk ;
+    rdfs:subClassOf ns1:DiagnosticConcept .
+
+ns1:pc1 a ns1:Computer,
+        owl:NamedIndividual ;
+    ns1:ageYears 5 ;
+    ns1:hasPart ns1:bat1,
+        ns1:cool1,
+        ns1:cpu1,
+        ns1:fan1,
+        ns1:gpu1,
+        ns1:hdd1,
+        ns1:mb1,
+        ns1:psu1,
+        ns1:ram1,
+        ns1:ssd1,
+        ns1:unit1 .
+
+ns1:DiagnosticCase a owl:Class ;
+    rdfs:label "Діагностичний випадок"@uk ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass ns1:Fault ;
+            owl:onProperty ns1:diagnosedAs ],
+        [ a owl:Restriction ;
+            owl:onClass ns1:Computer ;
+            owl:onProperty ns1:concernsComputer ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
+        [ a owl:Restriction ;
+            owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass ns1:Symptom ;
+            owl:onProperty ns1:hasSymptom ],
+        ns1:DiagnosticConcept .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( ns1:PowerOnSymptom ns1:BootSymptom ns1:RuntimeSymptom ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( ns1:Fault ns1:Symptom ns1:Component ns1:Action ns1:DiagnosticCase ) .
+

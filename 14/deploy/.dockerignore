@@ -1,0 +1,8 @@
+.env
+**/__pycache__
+.llm_cache
+*.ipynb
+*.docx
+*.pdf
+report_img
+figures

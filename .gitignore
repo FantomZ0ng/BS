@@ -1,0 +1,11 @@
+# секрети — пароль Neo4j лише локально
+.env
+# кеш відповідей LLM, середовища, службові файли
+.llm_cache/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/
+~$*
+# вкладений git-репозиторій ЛР 15 зберігається як bundle (15/repo.bundle)
+15/repo/

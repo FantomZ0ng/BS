@@ -1,0 +1,868 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="http://example.org/pcdiag"
+         xmlns="http://example.org/pcdiag#">
+
+<owl:Ontology rdf:about="http://example.org/pcdiag"/>
+
+<owl:ObjectProperty rdf:about="#hasPart">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+  <rdfs:domain rdf:resource="#Component"/>
+  <rdfs:range rdf:resource="#Component"/>
+  <owl:inverseOf rdf:resource="#partOf"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#partOf">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+  <rdfs:domain rdf:resource="#Component"/>
+  <rdfs:range rdf:resource="#Component"/>
+  <owl:inverseOf rdf:resource="#hasPart"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#hasSymptom">
+  <rdfs:domain rdf:resource="#DiagnosticCase"/>
+  <rdfs:range rdf:resource="#Symptom"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#diagnosedAs">
+  <rdfs:domain rdf:resource="#DiagnosticCase"/>
+  <rdfs:range rdf:resource="#Fault"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#concernsComputer">
+  <rdfs:domain rdf:resource="#DiagnosticCase"/>
+  <rdfs:range rdf:resource="#Computer"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#affects">
+  <rdfs:domain rdf:resource="#Fault"/>
+  <rdfs:range rdf:resource="#Component"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#manifestsAs">
+  <rdfs:domain rdf:resource="#Fault"/>
+  <rdfs:range rdf:resource="#Symptom"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#resolvedBy">
+  <rdfs:domain rdf:resource="#Fault"/>
+  <rdfs:range rdf:resource="#RepairAction"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#confirmedBy">
+  <rdfs:domain rdf:resource="#Fault"/>
+  <rdfs:range rdf:resource="#DiagnosticAction"/>
+</owl:ObjectProperty>
+
+<owl:DatatypeProperty rdf:about="#cpuTemperature">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  <rdfs:domain rdf:resource="#DiagnosticCase"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#reportedOn">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  <rdfs:domain rdf:resource="#DiagnosticCase"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#ageYears">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  <rdfs:domain rdf:resource="#Computer"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="#modelName">
+  <rdfs:domain rdf:resource="#Component"/>
+  <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</owl:DatatypeProperty>
+
+<owl:Class rdf:about="#DiagnosticConcept">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  <rdfs:label xml:lang="uk">Поняття</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#Fault">
+  <rdfs:subClassOf rdf:resource="#DiagnosticConcept"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#resolvedBy"/>
+      <owl:allValuesFrom rdf:resource="#RepairAction"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:label xml:lang="uk">Несправність</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#Symptom">
+  <rdfs:subClassOf rdf:resource="#DiagnosticConcept"/>
+  <rdfs:label xml:lang="uk">Симптом</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#Component">
+  <rdfs:subClassOf rdf:resource="#DiagnosticConcept"/>
+  <rdfs:label xml:lang="uk">Компонент</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#Action">
+  <rdfs:subClassOf rdf:resource="#DiagnosticConcept"/>
+  <rdfs:label xml:lang="uk">Дія</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#HardwareFault">
+  <rdfs:subClassOf rdf:resource="#Fault"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#affects"/>
+      <owl:someValuesFrom rdf:resource="#Component"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <owl:disjointWith rdf:resource="#SoftwareFault"/>
+  <rdfs:label xml:lang="uk">Апаратна несправність</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#SoftwareFault">
+  <rdfs:subClassOf rdf:resource="#Fault"/>
+  <rdfs:label xml:lang="uk">Програмна несправність</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#PowerFault">
+  <rdfs:subClassOf rdf:resource="#HardwareFault"/>
+  <rdfs:label xml:lang="uk">Несправність живлення</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#MemoryFault">
+  <rdfs:subClassOf rdf:resource="#HardwareFault"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#affects"/>
+      <owl:someValuesFrom rdf:resource="#RAM"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:label xml:lang="uk">Несправність пам'яті</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#StorageFault">
+  <rdfs:subClassOf rdf:resource="#HardwareFault"/>
+  <rdfs:label xml:lang="uk">Несправність накопичувача</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#CoolingFault">
+  <rdfs:subClassOf rdf:resource="#HardwareFault"/>
+  <rdfs:label xml:lang="uk">Несправність охолодження</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#VideoFault">
+  <rdfs:subClassOf rdf:resource="#HardwareFault"/>
+  <rdfs:label xml:lang="uk">Несправність відеопідсистеми</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#PSUFailure">
+  <rdfs:subClassOf rdf:resource="#PowerFault"/>
+  <rdfs:label xml:lang="uk">Відмова блока живлення</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#CMOSBatteryDepleted">
+  <rdfs:subClassOf rdf:resource="#PowerFault"/>
+  <rdfs:label xml:lang="uk">Розряджена батарейка CMOS</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#RAMModuleDefect">
+  <rdfs:subClassOf rdf:resource="#MemoryFault"/>
+  <rdfs:label xml:lang="uk">Дефект модуля ОЗП</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#RAMPoorContact">
+  <rdfs:subClassOf rdf:resource="#MemoryFault"/>
+  <rdfs:label xml:lang="uk">Поганий контакт ОЗП</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#RAMUnstableOverclock">
+  <rdfs:subClassOf rdf:resource="#MemoryFault"/>
+  <rdfs:label xml:lang="uk">Нестабільний розгін ОЗП</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#BadSectors">
+  <rdfs:subClassOf rdf:resource="#StorageFault"/>
+  <rdfs:label xml:lang="uk">Збійні сектори</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#CPUOverheating">
+  <rdfs:subClassOf rdf:resource="#CoolingFault"/>
+  <rdfs:label xml:lang="uk">Перегрів процесора</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#FanFailure">
+  <rdfs:subClassOf rdf:resource="#CoolingFault"/>
+  <rdfs:label xml:lang="uk">Відмова вентилятора</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#GPUFailure">
+  <rdfs:subClassOf rdf:resource="#VideoFault"/>
+  <rdfs:label xml:lang="uk">Відмова відеокарти</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#OSFault">
+  <rdfs:subClassOf rdf:resource="#SoftwareFault"/>
+  <rdfs:label xml:lang="uk">Несправність ОС</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#DriverFault">
+  <rdfs:subClassOf rdf:resource="#SoftwareFault"/>
+  <rdfs:label xml:lang="uk">Несправність драйвера</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#Malware">
+  <rdfs:subClassOf rdf:resource="#SoftwareFault"/>
+  <rdfs:label xml:lang="uk">Шкідливе ПЗ</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#BootloaderCorruption">
+  <rdfs:subClassOf rdf:resource="#OSFault"/>
+  <rdfs:label xml:lang="uk">Пошкодження завантажувача</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#SystemFileCorruption">
+  <rdfs:subClassOf rdf:resource="#OSFault"/>
+  <rdfs:label xml:lang="uk">Пошкодження системних файлів</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#PowerOnSymptom">
+  <rdfs:subClassOf rdf:resource="#Symptom"/>
+  <rdfs:label xml:lang="uk">Симптом увімкнення</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#BootSymptom">
+  <rdfs:subClassOf rdf:resource="#Symptom"/>
+  <rdfs:label xml:lang="uk">Симптом завантаження</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#RuntimeSymptom">
+  <rdfs:subClassOf rdf:resource="#Symptom"/>
+  <rdfs:label xml:lang="uk">Симптом роботи</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#NoPower">
+  <rdfs:subClassOf rdf:resource="#PowerOnSymptom"/>
+  <rdfs:label xml:lang="uk">Немає живлення</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#POSTBeeps">
+  <rdfs:subClassOf rdf:resource="#PowerOnSymptom"/>
+  <rdfs:label xml:lang="uk">Сигнали POST</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#NoDisplay">
+  <rdfs:subClassOf rdf:resource="#PowerOnSymptom"/>
+  <rdfs:label xml:lang="uk">Немає зображення</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#BlueScreen">
+  <rdfs:subClassOf rdf:resource="#BootSymptom"/>
+  <rdfs:label xml:lang="uk">Синій екран</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#BootloaderError">
+  <rdfs:subClassOf rdf:resource="#BootSymptom"/>
+  <rdfs:label xml:lang="uk">Помилка завантажувача</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#BootLoop">
+  <rdfs:subClassOf rdf:resource="#BootSymptom"/>
+  <rdfs:label xml:lang="uk">Циклічне перезавантаження</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#SuddenShutdown">
+  <rdfs:subClassOf rdf:resource="#RuntimeSymptom"/>
+  <rdfs:label xml:lang="uk">Раптове вимкнення</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#SlowPerformance">
+  <rdfs:subClassOf rdf:resource="#RuntimeSymptom"/>
+  <rdfs:label xml:lang="uk">Повільна робота</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#DisplayArtifacts">
+  <rdfs:subClassOf rdf:resource="#RuntimeSymptom"/>
+  <rdfs:label xml:lang="uk">Артефакти зображення</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#ClockReset">
+  <rdfs:subClassOf rdf:resource="#RuntimeSymptom"/>
+  <rdfs:label xml:lang="uk">Скидання дати й часу</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#PowerComponent">
+  <rdfs:subClassOf rdf:resource="#Component"/>
+  <rdfs:label xml:lang="uk">Компонент живлення</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#ComputeComponent">
+  <rdfs:subClassOf rdf:resource="#Component"/>
+  <rdfs:label xml:lang="uk">Обчислювальний компонент</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#StorageComponent">
+  <rdfs:subClassOf rdf:resource="#Component"/>
+  <rdfs:label xml:lang="uk">Компонент зберігання</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#CoolingComponent">
+  <rdfs:subClassOf rdf:resource="#Component"/>
+  <rdfs:label xml:lang="uk">Компонент охолодження</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#InterconnectComponent">
+  <rdfs:subClassOf rdf:resource="#Component"/>
+  <rdfs:label xml:lang="uk">Комутаційний компонент</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#PowerSupplyUnit">
+  <rdfs:subClassOf rdf:resource="#PowerComponent"/>
+  <rdfs:label xml:lang="uk">Блок живлення</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#CMOSBattery">
+  <rdfs:subClassOf rdf:resource="#PowerComponent"/>
+  <rdfs:label xml:lang="uk">Батарейка CMOS</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#CPU">
+  <rdfs:subClassOf rdf:resource="#ComputeComponent"/>
+  <rdfs:label xml:lang="uk">Процесор</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#GraphicsCard">
+  <rdfs:subClassOf rdf:resource="#ComputeComponent"/>
+  <rdfs:label xml:lang="uk">Відеокарта</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#RAM">
+  <rdfs:subClassOf rdf:resource="#StorageComponent"/>
+  <rdfs:label xml:lang="uk">Оперативна пам'ять</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#StorageDrive">
+  <rdfs:subClassOf rdf:resource="#StorageComponent"/>
+  <rdfs:label xml:lang="uk">Накопичувач</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#HDD">
+  <rdfs:subClassOf rdf:resource="#StorageDrive"/>
+  <rdfs:label xml:lang="uk">Жорсткий диск</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#SSD">
+  <rdfs:subClassOf rdf:resource="#StorageDrive"/>
+  <rdfs:label xml:lang="uk">Твердотільний накопичувач</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#Fan">
+  <rdfs:subClassOf rdf:resource="#CoolingComponent"/>
+  <rdfs:label xml:lang="uk">Вентилятор</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#Heatsink">
+  <rdfs:subClassOf rdf:resource="#CoolingComponent"/>
+  <rdfs:label xml:lang="uk">Радіатор</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#Motherboard">
+  <rdfs:subClassOf rdf:resource="#InterconnectComponent"/>
+  <rdfs:label xml:lang="uk">Системна плата</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#DiagnosticAction">
+  <rdfs:subClassOf rdf:resource="#Action"/>
+  <rdfs:label xml:lang="uk">Діагностична дія</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#RepairAction">
+  <rdfs:subClassOf rdf:resource="#Action"/>
+  <rdfs:label xml:lang="uk">Ремонтна дія</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#MemoryTest">
+  <rdfs:subClassOf rdf:resource="#DiagnosticAction"/>
+  <rdfs:label xml:lang="uk">Тест пам'яті</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#SMARTCheck">
+  <rdfs:subClassOf rdf:resource="#DiagnosticAction"/>
+  <rdfs:label xml:lang="uk">Перевірка SMART</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#TemperatureMeasurement">
+  <rdfs:subClassOf rdf:resource="#DiagnosticAction"/>
+  <rdfs:label xml:lang="uk">Вимірювання температури</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#PSUSwapTest">
+  <rdfs:subClassOf rdf:resource="#DiagnosticAction"/>
+  <rdfs:label xml:lang="uk">Перевірка іншим БЖ</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#ComponentReplacement">
+  <rdfs:subClassOf rdf:resource="#RepairAction"/>
+  <rdfs:label xml:lang="uk">Заміна компонента</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#DustCleaning">
+  <rdfs:subClassOf rdf:resource="#RepairAction"/>
+  <rdfs:label xml:lang="uk">Чищення від пилу</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#BootloaderRepair">
+  <rdfs:subClassOf rdf:resource="#RepairAction"/>
+  <rdfs:label xml:lang="uk">Відновлення завантажувача</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#DriverReinstall">
+  <rdfs:subClassOf rdf:resource="#RepairAction"/>
+  <rdfs:label xml:lang="uk">Перевстановлення драйвера</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#AntivirusScan">
+  <rdfs:subClassOf rdf:resource="#RepairAction"/>
+  <rdfs:label xml:lang="uk">Антивірусна перевірка</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#DisableXMP">
+  <rdfs:subClassOf rdf:resource="#RepairAction"/>
+  <rdfs:label xml:lang="uk">Вимкнення XMP</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#DiagnosticCase">
+  <rdfs:subClassOf rdf:resource="#DiagnosticConcept"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#diagnosedAs"/>
+      <owl:onClass rdf:resource="#Fault"/>
+      <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#concernsComputer"/>
+      <owl:onClass rdf:resource="#Computer"/>
+      <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#hasSymptom"/>
+      <owl:onClass rdf:resource="#Symptom"/>
+      <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <rdfs:label xml:lang="uk">Діагностичний випадок</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#Computer">
+  <rdfs:subClassOf rdf:resource="#InterconnectComponent"/>
+  <rdfs:label xml:lang="uk">Персональний комп'ютер</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#SystemUnit">
+  <rdfs:subClassOf rdf:resource="#InterconnectComponent"/>
+  <rdfs:label xml:lang="uk">Системний блок</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#CoolingSystem">
+  <rdfs:subClassOf rdf:resource="#CoolingComponent"/>
+  <rdfs:label xml:lang="uk">Система охолодження</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#ThermalPaste">
+  <rdfs:subClassOf rdf:resource="#CoolingComponent"/>
+  <rdfs:label xml:lang="uk">Термопаста</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#Monitor">
+  <rdfs:subClassOf rdf:resource="#ComputeComponent"/>
+  <rdfs:label xml:lang="uk">Монітор</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#OverheatingCase">
+  <rdfs:subClassOf rdf:resource="#DiagnosticCase"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#DiagnosticCase"/>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#cpuTemperature"/>
+          <owl:someValuesFrom>
+            <rdfs:Datatype>
+              <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+              <owl:withRestrictions>
+                <rdf:Description>
+                  <rdf:first>
+                    <rdf:Description>
+                      <xsd:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">90.0</xsd:minExclusive>
+                    </rdf:Description>
+                  </rdf:first>
+                  <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                </rdf:Description>
+              </owl:withRestrictions>
+            </rdfs:Datatype>
+          </owl:someValuesFrom>
+        </owl:Restriction>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:label xml:lang="uk">Випадок перегріву</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#MemoryRelatedCase">
+  <rdfs:subClassOf rdf:resource="#DiagnosticCase"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#DiagnosticCase"/>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#diagnosedAs"/>
+          <owl:someValuesFrom rdf:resource="#MemoryFault"/>
+        </owl:Restriction>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:label xml:lang="uk">Випадок, пов'язаний з пам'яттю</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#StartupProblemCase">
+  <rdfs:subClassOf rdf:resource="#DiagnosticCase"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#DiagnosticCase"/>
+        <owl:Restriction>
+          <owl:onProperty rdf:resource="#hasSymptom"/>
+          <owl:someValuesFrom>
+            <owl:Class>
+              <owl:unionOf rdf:parseType="Collection">
+                <rdf:Description rdf:about="#PowerOnSymptom"/>
+                <rdf:Description rdf:about="#BootSymptom"/>
+              </owl:unionOf>
+            </owl:Class>
+          </owl:someValuesFrom>
+        </owl:Restriction>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:label xml:lang="uk">Випадок проблеми запуску</rdfs:label>
+</owl:Class>
+
+<owl:Class rdf:about="#UndiagnosedCase">
+  <rdfs:subClassOf rdf:resource="#DiagnosticCase"/>
+  <owl:equivalentClass>
+    <owl:Class>
+      <owl:intersectionOf rdf:parseType="Collection">
+        <rdf:Description rdf:about="#DiagnosticCase"/>
+        <owl:Class>
+          <owl:complementOf>
+            <owl:Restriction>
+              <owl:onProperty rdf:resource="#diagnosedAs"/>
+              <owl:someValuesFrom rdf:resource="#Fault"/>
+            </owl:Restriction>
+          </owl:complementOf>
+        </owl:Class>
+      </owl:intersectionOf>
+    </owl:Class>
+  </owl:equivalentClass>
+  <rdfs:label xml:lang="uk">Недіагностований випадок</rdfs:label>
+</owl:Class>
+
+<owl:NamedIndividual rdf:about="#cpu1">
+  <rdf:type rdf:resource="#CPU"/>
+  <partOf rdf:resource="#pc1"/>
+  <partOf rdf:resource="#unit1"/>
+  <modelName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Intel Core i5-10400</modelName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#ram1">
+  <rdf:type rdf:resource="#RAM"/>
+  <partOf rdf:resource="#pc1"/>
+  <partOf rdf:resource="#unit1"/>
+  <modelName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kingston 8GB DDR4</modelName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#ssd1">
+  <rdf:type rdf:resource="#SSD"/>
+  <partOf rdf:resource="#pc1"/>
+  <modelName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Samsung 870 EVO</modelName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#hdd1">
+  <rdf:type rdf:resource="#HDD"/>
+  <partOf rdf:resource="#pc1"/>
+  <modelName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">WD Blue 1TB</modelName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#psu1">
+  <rdf:type rdf:resource="#PowerSupplyUnit"/>
+  <partOf rdf:resource="#pc1"/>
+  <modelName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Chieftec 500W</modelName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#fan1">
+  <rdf:type rdf:resource="#Fan"/>
+  <partOf rdf:resource="#pc1"/>
+  <partOf rdf:resource="#unit1"/>
+  <modelName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Deepcool GAMMAXX</modelName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#gpu1">
+  <rdf:type rdf:resource="#GraphicsCard"/>
+  <partOf rdf:resource="#pc1"/>
+  <modelName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GTX 1650</modelName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#bat1">
+  <rdf:type rdf:resource="#CMOSBattery"/>
+  <partOf rdf:resource="#pc1"/>
+  <partOf rdf:resource="#unit1"/>
+  <modelName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CR2032</modelName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#cool1">
+  <rdf:type rdf:resource="#CoolingSystem"/>
+  <hasPart rdf:resource="#fan1"/>
+  <partOf rdf:resource="#pc1"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#mb1">
+  <rdf:type rdf:resource="#Motherboard"/>
+  <hasPart rdf:resource="#ram1"/>
+  <hasPart rdf:resource="#cpu1"/>
+  <hasPart rdf:resource="#bat1"/>
+  <partOf rdf:resource="#pc1"/>
+  <modelName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ASUS PRIME B460</modelName>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#unit1">
+  <rdf:type rdf:resource="#SystemUnit"/>
+  <hasPart rdf:resource="#ssd1"/>
+  <hasPart rdf:resource="#mb1"/>
+  <hasPart rdf:resource="#psu1"/>
+  <hasPart rdf:resource="#gpu1"/>
+  <hasPart rdf:resource="#cool1"/>
+  <hasPart rdf:resource="#hdd1"/>
+  <hasPart rdf:resource="#ram1"/>
+  <hasPart rdf:resource="#bat1"/>
+  <hasPart rdf:resource="#cpu1"/>
+  <hasPart rdf:resource="#fan1"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#pc1">
+  <rdf:type rdf:resource="#Computer"/>
+  <hasPart rdf:resource="#unit1"/>
+  <hasPart rdf:resource="#ram1"/>
+  <hasPart rdf:resource="#bat1"/>
+  <hasPart rdf:resource="#ssd1"/>
+  <hasPart rdf:resource="#cpu1"/>
+  <hasPart rdf:resource="#psu1"/>
+  <hasPart rdf:resource="#fan1"/>
+  <hasPart rdf:resource="#gpu1"/>
+  <hasPart rdf:resource="#cool1"/>
+  <hasPart rdf:resource="#hdd1"/>
+  <hasPart rdf:resource="#mb1"/>
+  <ageYears rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</ageYears>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#a_replace">
+  <rdf:type rdf:resource="#ComponentReplacement"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#a_clean">
+  <rdf:type rdf:resource="#DustCleaning"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#a_driver">
+  <rdf:type rdf:resource="#DriverReinstall"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#a_boot">
+  <rdf:type rdf:resource="#BootloaderRepair"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#a_av">
+  <rdf:type rdf:resource="#AntivirusScan"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#d_memtest">
+  <rdf:type rdf:resource="#MemoryTest"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#d_smart">
+  <rdf:type rdf:resource="#SMARTCheck"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#d_temp">
+  <rdf:type rdf:resource="#TemperatureMeasurement"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#d_psu">
+  <rdf:type rdf:resource="#PSUSwapTest"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#s_nopower">
+  <rdf:type rdf:resource="#NoPower"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#s_bsod">
+  <rdf:type rdf:resource="#BlueScreen"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#s_booterr">
+  <rdf:type rdf:resource="#BootloaderError"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#s_shutdown">
+  <rdf:type rdf:resource="#SuddenShutdown"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#s_slow">
+  <rdf:type rdf:resource="#SlowPerformance"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#s_beeps">
+  <rdf:type rdf:resource="#POSTBeeps"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#f_psu">
+  <rdf:type rdf:resource="#PSUFailure"/>
+  <affects rdf:resource="#psu1"/>
+  <manifestsAs rdf:resource="#s_nopower"/>
+  <manifestsAs rdf:resource="#s_shutdown"/>
+  <resolvedBy rdf:resource="#a_replace"/>
+  <confirmedBy rdf:resource="#d_psu"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#f_overheat">
+  <rdf:type rdf:resource="#CPUOverheating"/>
+  <affects rdf:resource="#cpu1"/>
+  <manifestsAs rdf:resource="#s_slow"/>
+  <manifestsAs rdf:resource="#s_shutdown"/>
+  <resolvedBy rdf:resource="#a_clean"/>
+  <confirmedBy rdf:resource="#d_temp"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#f_sectors">
+  <rdf:type rdf:resource="#BadSectors"/>
+  <affects rdf:resource="#hdd1"/>
+  <manifestsAs rdf:resource="#s_booterr"/>
+  <manifestsAs rdf:resource="#s_bsod"/>
+  <resolvedBy rdf:resource="#a_replace"/>
+  <confirmedBy rdf:resource="#d_smart"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#f_ram">
+  <rdf:type rdf:resource="#RAMModuleDefect"/>
+  <affects rdf:resource="#ram1"/>
+  <manifestsAs rdf:resource="#s_bsod"/>
+  <manifestsAs rdf:resource="#s_beeps"/>
+  <resolvedBy rdf:resource="#a_replace"/>
+  <confirmedBy rdf:resource="#d_memtest"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#f_driver">
+  <rdf:type rdf:resource="#DriverFault"/>
+  <manifestsAs rdf:resource="#s_bsod"/>
+  <resolvedBy rdf:resource="#a_driver"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#f_malware">
+  <rdf:type rdf:resource="#Malware"/>
+  <manifestsAs rdf:resource="#s_slow"/>
+  <resolvedBy rdf:resource="#a_av"/>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#case1">
+  <rdf:type rdf:resource="#DiagnosticCase"/>
+  <concernsComputer rdf:resource="#pc1"/>
+  <hasSymptom rdf:resource="#s_nopower"/>
+  <diagnosedAs rdf:resource="#f_psu"/>
+  <rdf:type rdf:resource="#StartupProblemCase"/>
+  <reportedOn rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2026-09-03T09:00:00.000</reportedOn>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#case2">
+  <rdf:type rdf:resource="#DiagnosticCase"/>
+  <concernsComputer rdf:resource="#pc1"/>
+  <hasSymptom rdf:resource="#s_bsod"/>
+  <diagnosedAs rdf:resource="#f_driver"/>
+  <rdf:type rdf:resource="#StartupProblemCase"/>
+  <cpuTemperature rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">54.0</cpuTemperature>
+  <reportedOn rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2026-09-15T09:00:00.000</reportedOn>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#case3">
+  <rdf:type rdf:resource="#DiagnosticCase"/>
+  <concernsComputer rdf:resource="#pc1"/>
+  <hasSymptom rdf:resource="#s_shutdown"/>
+  <diagnosedAs rdf:resource="#f_overheat"/>
+  <rdf:type rdf:resource="#OverheatingCase"/>
+  <cpuTemperature rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">96.5</cpuTemperature>
+  <reportedOn rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2026-10-01T09:00:00.000</reportedOn>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#case4">
+  <rdf:type rdf:resource="#DiagnosticCase"/>
+  <concernsComputer rdf:resource="#pc1"/>
+  <hasSymptom rdf:resource="#s_booterr"/>
+  <diagnosedAs rdf:resource="#f_sectors"/>
+  <rdf:type rdf:resource="#StartupProblemCase"/>
+  <reportedOn rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2026-10-12T09:00:00.000</reportedOn>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#case5">
+  <rdf:type rdf:resource="#DiagnosticCase"/>
+  <concernsComputer rdf:resource="#pc1"/>
+  <hasSymptom rdf:resource="#s_slow"/>
+  <rdf:type rdf:resource="#OverheatingCase"/>
+  <rdf:type>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#diagnosedAs"/>
+      <owl:onClass rdf:resource="#Fault"/>
+      <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">0</owl:maxQualifiedCardinality>
+    </owl:Restriction>
+  </rdf:type>
+  <rdf:type rdf:resource="#UndiagnosedCase"/>
+  <cpuTemperature rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">92.0</cpuTemperature>
+  <reportedOn rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2026-11-02T09:00:00.000</reportedOn>
+</owl:NamedIndividual>
+
+<owl:NamedIndividual rdf:about="#case6">
+  <rdf:type rdf:resource="#DiagnosticCase"/>
+  <concernsComputer rdf:resource="#pc1"/>
+  <hasSymptom rdf:resource="#s_bsod"/>
+  <hasSymptom rdf:resource="#s_beeps"/>
+  <diagnosedAs rdf:resource="#f_ram"/>
+  <rdf:type rdf:resource="#StartupProblemCase"/>
+  <rdf:type rdf:resource="#MemoryRelatedCase"/>
+  <cpuTemperature rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">61.0</cpuTemperature>
+  <reportedOn rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2026-11-09T09:00:00.000</reportedOn>
+</owl:NamedIndividual>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#Fault"/>
+    <rdf:Description rdf:about="#Symptom"/>
+    <rdf:Description rdf:about="#Component"/>
+    <rdf:Description rdf:about="#Action"/>
+    <rdf:Description rdf:about="#DiagnosticCase"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+<owl:AllDisjointClasses>
+  <owl:members rdf:parseType="Collection">
+    <rdf:Description rdf:about="#PowerOnSymptom"/>
+    <rdf:Description rdf:about="#BootSymptom"/>
+    <rdf:Description rdf:about="#RuntimeSymptom"/>
+  </owl:members>
+</owl:AllDisjointClasses>
+
+
+</rdf:RDF>

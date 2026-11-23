@@ -1,0 +1,34 @@
+INFO:     Started server process [25768]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+{"ts": "2026-11-23T13:56:51", "event": "http", "request_id": "c1ce4994138e", "method": "GET", "path": "/health", "status": 200, "duration_ms": 7309.3}
+INFO:     127.0.0.1:60316 - "GET /health HTTP/1.1" 200 OK
+{"ts": "2026-11-23T13:56:53", "event": "http", "request_id": "c819b092df87", "method": "GET", "path": "/health", "status": 200, "duration_ms": 2029.0}
+INFO:     127.0.0.1:60331 - "GET /health HTTP/1.1" 200 OK
+{"ts": "2026-11-23T13:56:53", "event": "http", "request_id": "35a241ec5cb1", "method": "GET", "path": "/sources/KB-04:s2", "status": 200, "duration_ms": 2.0}
+INFO:     127.0.0.1:60334 - "GET /sources/KB-04%3As2 HTTP/1.1" 200 OK
+{"ts": "2026-11-23T13:56:53", "event": "http", "request_id": "360d913652f9", "method": "GET", "path": "/sources/XX-00:s0", "status": 404, "duration_ms": 0.6}
+INFO:     127.0.0.1:60335 - "GET /sources/XX-00%3As0 HTTP/1.1" 404 Not Found
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 2009.27it/s]
+{"ts": "2026-11-23T13:57:23", "event": "ask", "request_id": "3da4a6dcb0d4", "q_len": 46, "q_hash": "410f7a747a", "model": "llama3:latest", "prompt_version": "rag-graph-v1", "latency_ms": 30545.9, "stages": {"rerank_ms": 0.0, "vector_ms": 20557.7, "graph_ms": 27.5, "llm_ms": 9955.6}, "tokens_in": 916, "tokens_out": 45, "chunks": ["KB-04:s2", "KB-04:s0", "KB-11:s1", "KB-04:s1"], "graph_edges": 1, "refused": false}
+{"ts": "2026-11-23T13:57:23", "event": "http", "request_id": "3da4a6dcb0d4", "method": "POST", "path": "/ask", "status": 200, "duration_ms": 30660.3}
+INFO:     127.0.0.1:60336 - "POST /ask HTTP/1.1" 200 OK
+{"ts": "2026-11-23T13:57:24", "event": "http", "request_id": "a05f92b7def7", "method": "POST", "path": "/ask", "status": 422, "duration_ms": 14.5}
+INFO:     127.0.0.1:60456 - "POST /ask HTTP/1.1" 422 Unprocessable Entity
+{"ts": "2026-11-23T13:57:24", "event": "http", "request_id": "e8705191f6eb", "method": "POST", "path": "/ask", "status": 422, "duration_ms": 1.0}
+INFO:     127.0.0.1:60457 - "POST /ask HTTP/1.1" 422 Unprocessable Entity
+{"ts": "2026-11-23T13:57:29", "event": "http", "request_id": "9befa8cd2737", "method": "GET", "path": "/docs", "status": 200, "duration_ms": 11.4}
+INFO:     127.0.0.1:60490 - "GET /docs HTTP/1.1" 200 OK
+{"ts": "2026-11-23T13:57:30", "event": "http", "request_id": "81096315c276", "method": "GET", "path": "/openapi.json", "status": 200, "duration_ms": 136.0}
+INFO:     127.0.0.1:60490 - "GET /openapi.json HTTP/1.1" 200 OK
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (138 > 128). Running this sequence through the model will result in indexing errors
+{"ts": "2026-11-23T13:58:03", "event": "ask", "request_id": "299c8510d1c8", "q_len": 37, "q_hash": "27266e6e76", "model": "llama3:latest", "prompt_version": "rag-graph-v1", "latency_ms": 17606.5, "stages": {"rerank_ms": 0.0, "vector_ms": 24.4, "graph_ms": 0.3, "llm_ms": 17575.4}, "tokens_in": 1084, "tokens_out": 48, "chunks": ["KB-03:s2", "KB-01:s3", "KB-06:s0", "KB-17:s0"], "graph_edges": 0, "refused": false}
+{"ts": "2026-11-23T13:58:03", "event": "http", "request_id": "299c8510d1c8", "method": "POST", "path": "/ask", "status": 200, "duration_ms": 17611.5}
+INFO:     127.0.0.1:60562 - "POST /ask HTTP/1.1" 200 OK
+{"ts": "2026-11-23T13:58:08", "event": "ask", "request_id": "84f3a4bd138e", "q_len": 93, "q_hash": "476ba1c98e", "model": "llama3:latest", "prompt_version": "rag-graph-v1", "latency_ms": 522.0, "stages": {"rerank_ms": 0.0, "vector_ms": 154.5, "graph_ms": 354.8, "llm_ms": 1.1}, "tokens_in": 1397, "tokens_out": 214, "chunks": ["KB-08:s0", "KB-19:s1", "KB-05:s0", "KB-19:s0"], "graph_edges": 12, "refused": false}
+{"ts": "2026-11-23T13:58:08", "event": "http", "request_id": "84f3a4bd138e", "method": "POST", "path": "/ask", "status": 200, "duration_ms": 525.1}
+INFO:     127.0.0.1:60600 - "POST /ask HTTP/1.1" 200 OK
+{"ts": "2026-11-23T13:58:26", "event": "ask", "request_id": "ec1fa100ce40", "q_len": 48, "q_hash": "5480867ff5", "model": "llama3:latest", "prompt_version": "rag-graph-v1", "latency_ms": 12735.3, "stages": {"rerank_ms": 0.0, "vector_ms": 33.0, "graph_ms": 0.4, "llm_ms": 12698.2}, "tokens_in": 943, "tokens_out": 7, "chunks": ["KB-20:s2", "KB-03:s3", "KB-01:s3", "KB-10:s1"], "graph_edges": 0, "refused": true}
+{"ts": "2026-11-23T13:58:26", "event": "http", "request_id": "ec1fa100ce40", "method": "POST", "path": "/ask", "status": 200, "duration_ms": 12736.7}
+INFO:     127.0.0.1:60614 - "POST /ask HTTP/1.1" 200 OK

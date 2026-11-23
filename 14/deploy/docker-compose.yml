@@ -1,0 +1,41 @@
+# Запуск однією командою з кореня проєкту:  docker compose -f 14/deploy/docker-compose.yml up -d
+# Секрети — у файлі 14/deploy/.env (зразок .env.example), який не входить до образу.
+name: pcdiag
+
+services:
+  neo4j:
+    image: neo4j:5.26.0-community
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:?задайте NEO4J_PASSWORD у .env}
+      NEO4J_server_memory_heap_max__size: 512m
+    ports: ["127.0.0.1:7474:7474", "127.0.0.1:7687:7687"]
+    volumes: ["neo4j_data:/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p \"$${NEO4J_AUTH#neo4j/}\" 'RETURN 1' || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  loader:                      # одноразовий ETL онтології у граф (ЛР 9, ідемпотентний MERGE)
+    build: { context: ../.., dockerfile: 14/deploy/Dockerfile }
+    image: pcdiag-api:1.0
+    env_file: .env
+    command: ["python", "/srv/pcdiag/load_graph.py"]
+    depends_on: { neo4j: { condition: service_healthy } }
+    restart: "no"
+
+  api:
+    image: pcdiag-api:1.0
+    env_file: .env
+    ports: ["127.0.0.1:8000:8000"]
+    extra_hosts: ["host.docker.internal:host-gateway"]   # Ollama працює на хості (GPU)
+    depends_on:
+      neo4j: { condition: service_healthy }
+      loader: { condition: service_completed_successfully }
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp"]
+
+volumes:
+  neo4j_data:
